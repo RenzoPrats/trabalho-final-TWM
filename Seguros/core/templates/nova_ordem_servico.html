@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Renz Seguros</title>
+        <link rel="stylesheet" type="text/css" href={% static 'css/bootstrap.css' %} />
+        <link rel="stylesheet" type="text/css" href={% static 'css/styles3.css' %} />
+        <link rel="stylesheet" type="text/css" href={% static 'css/style.css' %} />
+        <link rel="shortcut icon" href={% static 'images/favicon.png' %} type="image/x-icon">
+    </head>
+    <body>
+        
+        <header class="header_section barra-header">
+            <div class="container">
+              <nav class="navbar navbar-expand-lg custom_nav-container ">
+                <a class="navbar-brand " href="/">
+                  <span>
+                    Renz Seguros
+                  </span>
+                </a>
+      
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class=""> </span>
+                </button>
+      
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                      <button class="btn-logar" onclick="window.location.href = '/logout'">
+                        <p>Sair</p>
+                      </button>
+                    {% else %}
+                    <button class="btn-logar" onclick="window.location.href = '/entrar'">
+                      <p>Entrar</p>
+                    </button>
+                    {% endif %}
+                  </ul>
+                </div>
+              </nav>
+            </div>
+        </header>
+        
+        <h1 class="h1-nova-ordem">Nova Ordem de Serviço</h1>
+        <section class="vh-100 form-nova-ordem">
+            <div class="container h-100">
+              <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-xl-9">
+                    
+                  <div class="card" style="border-radius: 15px;">
+                    <form id="formulario_nova_ordem" method="POST" name="formulario_nova_ordem" action="/criar_nova_ordem"> 
+                      {% csrf_token %}  
+                      <div class="card-body">
+            
+                        <div class="row align-items-center pt-4 pb-3">
+                            <div class="col-md-3 ps-5">
+                            <h5 class="mb-0">Tipo de Seguro:</h5>
+                            </div>
+                            <div class="col-md-9 pe-5">
+                            <select id="select-tipo" class="form-control form-control-lg" {% if request.user.is_funcionario %}disabled{% endif %} onchange="mudarTipo();">
+                                {% for t in tipos_seguros %}
+                                    <option value="{{ t.id }}" id="{{ t.id }}">{{ t.tipo }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="text" name="tipo" id="tipo" value="{% if ordem_servico.tipo %}{{ ordem_servico.tipo.id }}{% else %}{{ tipos_seguros.first.id }}{% endif %}" style="display:none;"/>
+                            <input type="text" name="id_ordem_servico" id="id_ordem_servico" value="{% if ordem_servico %}{{ ordem_servico.id }}{% else %}0{% endif %}" style="display:none;"/>
+                            </div>
+                        </div>
+            
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center py-3">
+                            <div class="col-md-3 ps-5">
+                            <h5 class="mb-0">Descrição:</h5>
+                            </div>
+                            <div class="col-md-9 pe-5">
+                            <textarea class="form-control" name="descricao" id="descricao" {% if request.user.is_funcionario %}readonly{% else %}required{% endif %} rows="3" placeholder="Descreva detalhadamente o problema">{{ ordem_servico.descricao }}</textarea>
+                            </div>
+                        </div>
+            
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center pt-4 pb-3">
+                            <div class="col-md-3 ps-5">
+                            <h5 class="mb-0">Funcionário:</h5>
+                            </div>
+                            <div class="col-md-9 pe-5">
+                            <input type="text" name="cliente" value="{{ ordem_servico.funcionario.name }}" status="cliente" readonly class="form-control form-control-lg" />
+                            </div>
+                        </div>
+            
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center py-3">
+                            <div class="col-md-3 ps-5">
+                            <h5 class="mb-0">Relatório:</h5>
+                            </div>
+                            <div class="col-md-9 pe-5">
+                            <textarea class="form-control" id="relatorio" name="relatorio" {% if not request.user.is_funcionario %}readonly{% else %}required{% endif %} rows="3" placeholder="Faça o relatório do problema">{% if ordem_servico.relatorio %}{{ ordem_servico.relatorio }}{% endif %}</textarea>
+                            </div>
+                        </div>
+            
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center pt-4 pb-3">
+                            <div class="col-md-3 ps-5">
+                            <h5 class="mb-0">Status:</h5>
+                            </div>
+                            <div class="col-md-9 pe-5">
+                            <input type="text" id="status" name="status" value="{% if ordem_servico.status %}Analisado{% else %}Aberto{% endif %}" readonly class="form-control form-control-lg" />
+                            </div>
+                        </div>
+            
+                        <hr class="mx-n3">
+                        
+                        <div class="div-salvar-ordem py-4">
+                            <button type="submit" class="btn btn-primary btn-lg">Salvar</button>
+                        </div>
+            
+                      </div>
+                    </form>
+                  </div>
+          
+                </div>
+              </div>
+            </div>
+          </section>
+    </body>
+    <script>
+        {% if ordem_servico.tipo.id %}
+            document.getElementById("select-tipo").options.namedItem("{{ ordem_servico.tipo.id }}").selected=true;
+        {% endif %}
+        function mudarTipo(){
+            var select = document.getElementById('select-tipo');
+            var value = select.options[select.selectedIndex].value;
+            document.getElementById("tipo").value = value;
+        }
+      </script>
+</html>

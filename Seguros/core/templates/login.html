@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Renz Seguros</title>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <!-- Sweet Alert -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <link rel="stylesheet" type="text/css" href={% static 'css/styles2.css' %} />
+        <link rel="shortcut icon" href={% static 'images/favicon.png' %} type="image/x-icon">
+    </head>
+    <body>
+        
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <img style="width:50px" src={% static 'images/user_icon.png' %} id="icon" alt="User Icon" />
+      </div>
+  
+      <!-- Login Form -->
+      <form id="formulario_login" method="POST" name="formulario_login" action="/login">
+        {% csrf_token %}
+        <input type="email" id="email" class="fadeIn second" name="email" placeholder="Email" required autocomplete="off">
+        <input type="password" id="senha" class="fadeIn third" name="senha" placeholder="Senha" required>
+        <input type="submit" class="fadeIn fourth" value="Entrar" style="cursor:pointer">
+      </form>
+  
+      <!-- Cadastrar -->
+      <div id="formFooter">
+        <a class="underlineHover" href="/cadastrar">Ainda não é cadastrado?</a>
+      </div>
+  
+    </div>
+  </div>
+  </body>
+  <script>
+    {% if messages %}
+      {% for m in messages %}
+          Swal.fire({
+              icon: 'error',
+              title: '{{ m }}',
+              showConfirmButton: true,
+          })
+      {% endfor %}
+    {% endif %}
+  </script>
+</html>

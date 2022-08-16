@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Renz Seguros</title>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <!-- Sweet Alert -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <link rel="stylesheet" type="text/css" href={% static 'css/styles2.css' %} />
+        <link rel="shortcut icon" href={% static 'images/favicon.png' %} type="image/x-icon">
+    </head>
+    <body>
+        
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <img style="width:50px" src={% static 'images/user_icon.png' %} id="icon" alt="User Icon" />
+      </div>
+  
+      <!-- Login Form -->
+      <form method="POST" id="formulario_cadastro" name="formulario_cadastro" action="/registrar">
+        {% csrf_token %}
+        <input type="text" id="nome" class="fadeIn second" name="nome" placeholder="Nome" required autocomplete="off">
+        <input type="email" id="email" class="fadeIn second" name="email" placeholder="Email" required autocomplete="off">
+        <input type="password" id="senha1" class="fadeIn third" name="senha1" placeholder="Senha" required>
+        <input type="password" id="senha2" class="fadeIn third" name="senha2" placeholder="Confirme sua senha" required>
+        <div class="funcionario-div">
+          <br>
+          <p class="funcionario-p fadeIn third">É funcionário?&nbsp;&nbsp;</p>
+          <input type="checkbox" id="verifica_funcionario" class="fadeIn third funcionario-checkbox" name="verifica_funcionario" onchange="ver_funcionario()">
+          <input type="text" id="is_funcionario" name="is_funcionario" style="display:none" value="0">
+        </div>
+        <input type="submit" class="fadeIn fourth" value="Cadastrar" style="cursor:pointer">
+      </form>
+  
+      <!-- Cadastrar -->
+      <div id="formFooter">
+        <a class="underlineHover" href="/entrar">Já é cadastrado?</a>
+      </div>
+  
+    </div>
+  </div>
+  </body>
+  <script>
+    function ver_funcionario(){
+      if ($("#verifica_funcionario").is(":checked")){
+        $("#is_funcionario").val(1)
+      }else{
+        $("#is_funcionario").val(0)
+      }
+    }
+    {% if messages %}
+      {% for m in messages %}
+          Swal.fire({
+              icon: 'error',
+              title: '{{ m }}',
+              showConfirmButton: true,
+          })
+      {% endfor %}
+    {% endif %}
+  </script>
+</html>

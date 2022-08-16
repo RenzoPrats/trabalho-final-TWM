@@ -1,0 +1,52 @@
+.tabela-ordem-servico{
+    margin-top: 1%;
+    width: 80%;
+    margin-bottom: 10%;
+    margin-left: 10%;
+}
+
+.tabela-body:hover{
+    cursor: pointer;
+}
+
+.barra-header{
+    background-color: #343a40;
+}
+
+.h1-tabela{
+    margin-top: 3%;
+    margin-left: 35%;
+}
+
+.btn-nova-ordem{
+    background-color: #5cb85c; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    height: 45px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+
+    margin-left: 10%;
+}
+
+.btn-nova-ordem:hover{
+    background-color: #4fa14f;
+}
+
+
+.form-nova-ordem{
+    margin-top: 3%;
+}
+
+.h1-nova-ordem{
+    margin-top: 3%;
+    margin-left: 33%;
+}
+
+.div-salvar-ordem{
+    margin-left: 42%;
+}

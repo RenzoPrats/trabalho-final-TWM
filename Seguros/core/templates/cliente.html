@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Renz Seguros</title>
+        <link rel="stylesheet" type="text/css" href={% static 'css/bootstrap.css' %} />
+        <link rel="stylesheet" type="text/css" href={% static 'css/styles3.css' %} />
+        <link rel="stylesheet" type="text/css" href={% static 'css/style.css' %} />
+        <link rel="shortcut icon" href={% static 'images/favicon.png' %} type="image/x-icon">
+    </head>
+    <body>
+        
+        <header class="header_section barra-header">
+            <div class="container">
+              <nav class="navbar navbar-expand-lg custom_nav-container ">
+                <a class="navbar-brand " href="/">
+                  <span>
+                    Renz Seguros
+                  </span>
+                </a>
+      
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class=""> </span>
+                </button>
+      
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                      <button class="btn-logar" onclick="window.location.href = '/logout'">
+                        <p>Sair</p>
+                      </button>
+                    {% else %}
+                    <button class="btn-logar" onclick="window.location.href = '/entrar'">
+                      <p>Entrar</p>
+                    </button>
+                    {% endif %}
+                  </ul>
+                </div>
+              </nav>
+            </div>
+        </header>
+        
+        <h1 class="h1-tabela">Ordens de Serviço</h1>
+
+        <button class="btn-nova-ordem" onclick="window.location.href = '/nova_ordem_servico'">
+            <p>Criar Nova Ordem</p>
+        </button>
+
+        <table class="table tabela-ordem-servico table-bordered">
+            <thead class="thead-dark">
+              <tr>
+                  <th scope="col" class="col-md-1">#</th>
+                  <th scope="col" class="col-md-1">Tipo</th>
+                  <th scope="col" class="col-md-3">Cliente</th>
+                  <th scope="col" class="col-md-3">Funcionário</th>
+                  <th scope="col" class="col-md-2">Data</th>
+                  <th scope="col" class="col-md-1">Status</th>
+              </tr>
+            </thead>
+            <tbody class="tabela-body">
+                {% for o in ordens_servico %}
+                  <tr onclick="window.location.href = '/nova_ordem_servico?id_ordem={{ o.id }}'">
+                    <th scope="row">{{ o.id }}</th>
+                    <td scope="row">{{ o.tipo.tipo }}</td>
+                    <td scope="row">{{ o.cliente.name }}</td>
+                    <td scope="row">{% if o.funcionario %}{{ o.funcionario.name }}{% endif %}</td>
+                    <td scope="row">{{ o.data }}</td>
+                    <td scope="row">{% if o.status %}Analisado{% else %}Aberto{% endif %}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+    </body>
+</html>
